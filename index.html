@@ -7,182 +7,184 @@
     <link rel="stylesheet" href="styles.css">
 </head>
 <body>
-    <div class="app-container">
-        <header>
-            <h1>🧰 生活效率工具箱</h1>
-            <div class="header-actions">
-                <button id="theme-toggle" class="btn-icon" title="切换主题">🌙</button>
-                <button id="export-btn" class="btn-secondary" title="导出数据">📤 导出</button>
-                <button id="import-btn" class="btn-secondary" title="导入数据">📥 导入</button>
-                <input type="file" id="import-file" accept=".json" style="display: none;">
-            </div>
-        </header>
-
-        <nav class="tool-nav">
-            <button class="nav-item active" data-tool="todo">📝 待办清单</button>
-            <button class="nav-item" data-tool="expense">💰 记账本</button>
-            <button class="nav-item" data-tool="habit">🎯 习惯打卡</button>
-            <button class="nav-item" data-tool="stats">📊 使用统计</button>
-            <button class="nav-item" data-tool="about">👤 关于我</button>
-        </nav>
-
-        <div class="quick-actions">
-            <span class="quick-label">快捷操作:</span>
-            <button class="quick-btn" data-quick="add-todo">➕ 新增待办</button>
-            <button class="quick-btn" data-quick="add-expense">💸 记一笔</button>
-            <button class="quick-btn" data-quick="add-habit">✅ 打卡习惯</button>
+    <header class="header">
+        <div class="logo">
+            <span>🧰</span>
+            <h1>生活效率工具箱</h1>
         </div>
+        <div class="header-actions">
+            <button id="theme-toggle" class="btn-icon">🌙</button>
+        </div>
+    </header>
 
-        <main class="tool-content">
-            <section id="todo-section" class="tool-section active">
-                <div class="tool-header">
-                    <h2>📝 待办清单</h2>
-                    <div class="todo-stats">
-                        <span class="stat-item">总数: <strong id="todo-total">0</strong></span>
-                        <span class="stat-item">已完成: <strong id="todo-completed">0</strong></span>
-                        <span class="stat-item">完成率: <strong id="todo-rate">0%</strong></span>
-                    </div>
-                </div>
-                <div class="add-form">
-                    <input type="text" id="todo-input" placeholder="添加新的待办事项..." class="input-field">
-                    <select id="todo-priority" class="select-field">
-                        <option value="low">🟢 低</option>
-                        <option value="medium" selected>🟡 中</option>
-                        <option value="high">🔴 高</option>
-                    </select>
-                    <button id="todo-add-btn" class="btn-primary">添加</button>
-                </div>
-                <div class="filter-buttons">
-                    <button class="filter-btn active" data-filter="all">全部</button>
-                    <button class="filter-btn" data-filter="active">未完成</button>
-                    <button class="filter-btn" data-filter="completed">已完成</button>
-                </div>
-                <ul id="todo-list" class="item-list"></ul>
-            </section>
+    <nav class="tool-nav">
+        <button class="nav-item active" data-tool="todo">📝 待办清单</button>
+        <button class="nav-item" data-tool="expense">💰 记账本</button>
+        <button class="nav-item" data-tool="habit">🎯 习惯打卡</button>
+        <button class="nav-item" data-tool="stats">📊 使用统计</button>
+        <button class="nav-item" data-tool="about">👤 关于我</button>
+    </nav>
 
-            <section id="expense-section" class="tool-section">
-                <div class="tool-header">
-                    <h2>💰 记账本</h2>
-                    <div class="expense-summary">
-                        <div class="summary-item income">
-                            <span class="label">收入</span>
-                            <span class="amount" id="total-income">¥0.00</span>
-                        </div>
-                        <div class="summary-item expense">
-                            <span class="label">支出</span>
-                            <span class="amount" id="total-expense">¥0.00</span>
-                        </div>
-                        <div class="summary-item balance">
-                            <span class="label">结余</span>
-                            <span class="amount" id="total-balance">¥0.00</span>
-                        </div>
-                    </div>
-                </div>
-                <div class="add-form">
-                    <select id="expense-type" class="select-field">
-                        <option value="expense">💸 支出</option>
-                        <option value="income">💰 收入</option>
-                    </select>
-                    <input type="text" id="expense-desc" placeholder="描述..." class="input-field">
-                    <input type="number" id="expense-amount" placeholder="金额" class="input-field" step="0.01">
-                    <button id="expense-add-btn" class="btn-primary">记录</button>
-                </div>
-                <ul id="expense-list" class="item-list"></ul>
-            </section>
-
-            <section id="habit-section" class="tool-section">
-                <div class="tool-header">
-                    <h2>🎯 习惯打卡</h2>
-                </div>
-                <div class="add-form">
-                    <input type="text" id="habit-input" placeholder="添加新习惯..." class="input-field">
-                    <input type="number" id="habit-target" placeholder="目标天数" class="input-field" value="30" min="1">
-                    <button id="habit-add-btn" class="btn-primary">添加</button>
-                </div>
-                <div id="habit-list" class="habit-grid"></div>
-            </section>
-
-            <section id="stats-section" class="tool-section">
-                <div class="tool-header">
-                    <h2>📊 使用统计</h2>
-                </div>
-                <div class="stats-grid">
-                    <div class="stat-card">
-                        <h3>🔄 工具使用次数</h3>
-                        <div id="usage-stats" class="usage-list"></div>
-                    </div>
-                    <div class="stat-card">
-                        <h3>📝 待办数据</h3>
-                        <div id="todo-stats-detail" class="stats-detail"></div>
-                    </div>
-                    <div class="stat-card">
-                        <h3>💰 财务概览</h3>
-                        <div id="expense-stats-detail" class="stats-detail"></div>
-                    </div>
-                    <div class="stat-card">
-                        <h3>🎯 习惯进度</h3>
-                        <div id="habit-stats-detail" class="stats-detail"></div>
-                    </div>
-                </div>
-            </section>
-
-            <section id="about-section" class="tool-section">
-                <div class="tool-header">
-                    <h2>👤 关于我</h2>
-                </div>
-                <div class="resume-container">
-                    <div class="resume-header">
-                        <div class="avatar">
-                            <img src="https://trae-api-cn.mchost.guru/api/ide/v1/text_to_image?prompt=professional%20portrait%20of%20a%20student%20developer%2C%20friendly%20smile%2C%20modern%20style&image_size=square" alt="头像">
-                        </div>
-                        <div class="resume-info">
-                            <h1>张三</h1>
-                            <p class="title">全栈开发爱好者 | 效率工具达人</p>
-                            <div class="contact-info">
-                                <span>📧 zhangsan@example.com</span>
-                                <span>📍 中国，北京</span>
-                                <span>🔗 github.com/zhangsan</span>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="resume-section">
-                        <h3>📚 个人简介</h3>
-                        <p>热爱编程，专注于开发实用的效率工具。喜欢用技术解决生活中的问题，追求简洁优雅的代码风格。</p>
-                    </div>
-                    <div class="resume-section">
-                        <h3>🛠️ 技能</h3>
-                        <div class="skill-tags">
-                            <span class="skill-tag">HTML/CSS</span>
-                            <span class="skill-tag">JavaScript</span>
-                            <span class="skill-tag">Vue.js</span>
-                            <span class="skill-tag">Node.js</span>
-                            <span class="skill-tag">Python</span>
-                        </div>
-                    </div>
-                    <div class="resume-section">
-                        <h3>📂 项目经历</h3>
-                        <div class="project-item">
-                            <h4>生活效率工具箱</h4>
-                            <p>一个包含待办清单、记账本、习惯打卡等实用工具的多功能效率应用</p>
-                        </div>
-                        <div class="project-item">
-                            <h4>智能学习助手</h4>
-                            <p>帮助学生管理学习时间和任务的学习管理系统</p>
-                        </div>
-                    </div>
-                    <div class="resume-section">
-                        <h3>🎓 教育背景</h3>
-                        <div class="edu-item">
-                            <h4>某某大学</h4>
-                            <p>计算机科学与技术 | 本科在读</p>
-                        </div>
-                    </div>
-                </div>
-            </section>
-        </main>
-
-        <div class="toast" id="toast"></div>
+    <div class="quick-actions">
+        <button class="quick-btn" data-quick="add-todo">➕ 添加待办</button>
+        <button class="quick-btn" data-quick="add-expense">➕ 添加记录</button>
+        <button class="quick-btn" data-quick="add-habit">➕ 添加习惯</button>
     </div>
+
+    <main class="main-content">
+        <section id="todo-section" class="tool-section active">
+            <div class="tool-header">
+                <h2>📝 待办清单</h2>
+                <div class="stats-bar">
+                    <span>总数: <span id="todo-total">0</span></span>
+                    <span>已完成: <span id="todo-completed">0</span></span>
+                    <span>完成率: <span id="todo-rate">0%</span></span>
+                </div>
+            </div>
+            <div class="todo-add">
+                <input type="text" id="todo-input" placeholder="添加待办事项...">
+                <select id="todo-priority">
+                    <option value="medium">中优先级</option>
+                    <option value="high">高优先级</option>
+                    <option value="low">低优先级</option>
+                </select>
+                <button id="todo-add-btn">添加</button>
+            </div>
+            <div class="filter-bar">
+                <button class="filter-btn active" data-filter="all">全部</button>
+                <button class="filter-btn" data-filter="active">未完成</button>
+                <button class="filter-btn" data-filter="completed">已完成</button>
+            </div>
+            <ul id="todo-list"></ul>
+        </section>
+
+        <section id="expense-section" class="tool-section">
+            <div class="tool-header">
+                <h2>💰 记账本</h2>
+                <div class="expense-summary">
+                    <div class="summary-item">
+                        <span>收入</span>
+                        <span id="total-income" class="income">¥0.00</span>
+                    </div>
+                    <div class="summary-item">
+                        <span>支出</span>
+                        <span id="total-expense" class="expense">¥0.00</span>
+                    </div>
+                    <div class="summary-item">
+                        <span>结余</span>
+                        <span id="total-balance">¥0.00</span>
+                    </div>
+                </div>
+            </div>
+            <div class="expense-add">
+                <select id="expense-type">
+                    <option value="expense">支出</option>
+                    <option value="income">收入</option>
+                </select>
+                <input type="text" id="expense-desc" placeholder="描述...">
+                <input type="number" id="expense-amount" placeholder="金额" step="0.01">
+                <button id="expense-add-btn">记录</button>
+            </div>
+            <ul id="expense-list"></ul>
+        </section>
+
+        <section id="habit-section" class="tool-section">
+            <div class="tool-header">
+                <h2>🎯 习惯打卡</h2>
+            </div>
+            <div class="habit-add">
+                <input type="text" id="habit-input" placeholder="习惯名称...">
+                <input type="number" id="habit-target" placeholder="目标天数" min="1" value="21">
+                <button id="habit-add-btn">添加习惯</button>
+            </div>
+            <div id="habit-list"></div>
+        </section>
+
+        <section id="stats-section" class="tool-section">
+            <div class="tool-header">
+                <h2>📊 使用统计</h2>
+            </div>
+            <div class="stats-container">
+                <div class="stats-card">
+                    <h3>工具使用次数</h3>
+                    <div id="usage-stats"></div>
+                </div>
+                <div class="stats-card">
+                    <h3>待办统计</h3>
+                    <div id="todo-stats-detail"></div>
+                </div>
+                <div class="stats-card">
+                    <h3>财务统计</h3>
+                    <div id="expense-stats-detail"></div>
+                </div>
+                <div class="stats-card">
+                    <h3>习惯统计</h3>
+                    <div id="habit-stats-detail"></div>
+                </div>
+            </div>
+            <div class="data-actions">
+                <button id="export-btn">📤 导出数据</button>
+                <label for="import-file" id="import-btn">📥 导入数据</label>
+                <input type="file" id="import-file" accept=".json" hidden>
+            </div>
+        </section>
+
+        <section id="about-section" class="tool-section">
+            <div class="tool-header">
+                <h2>👤 关于我</h2>
+            </div>
+            <div class="resume-container">
+                <div class="resume-header">
+                    <div class="avatar">
+                        <img src="https://trae-api-cn.mchost.guru/api/ide/v1/text_to_image?prompt=professional%20portrait%20of%20a%20student%20developer%2C%20friendly%20smile%2C%20modern%20style&image_size=square" alt="头像">
+                    </div>
+                    <div class="resume-info">
+                        <h1>林宇轩</h1>
+                        <p class="title">全栈开发爱好者 | 效率工具达人</p>
+                        <div class="contact-info">
+                            <span>📧 linyuxuan@example.com</span>
+                            <span>📍 中国，福建福州</span>
+                            <span>🔗 github.com/linyuxuan</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="resume-section">
+                    <h3>📚 个人简介</h3>
+                    <p>热爱编程，专注于开发实用的效率工具。喜欢用技术解决生活中的问题，追求简洁优雅的代码风格。</p>
+                </div>
+                <div class="resume-section">
+                    <h3>🛠️ 技能</h3>
+                    <div class="skill-tags">
+                        <span class="skill-tag">HTML/CSS</span>
+                        <span class="skill-tag">JavaScript</span>
+                        <span class="skill-tag">Vue.js</span>
+                        <span class="skill-tag">Node.js</span>
+                        <span class="skill-tag">Python</span>
+                    </div>
+                </div>
+                <div class="resume-section">
+                    <h3>📂 项目经历</h3>
+                    <div class="project-item">
+                        <h4>生活效率工具箱</h4>
+                        <p>一个包含待办清单、记账本、习惯打卡等实用工具的多功能效率应用</p>
+                    </div>
+                    <div class="project-item">
+                        <h4>智能学习助手</h4>
+                        <p>帮助学生管理学习时间和任务的学习管理系统</p>
+                    </div>
+                </div>
+                <div class="resume-section">
+                    <h3>🎓 教育背景</h3>
+                    <div class="edu-item">
+                        <h4>福州软件职业技术学院</h4>
+                        <p>人工智能技术应用 | 在读</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <div id="toast"></div>
 
     <script src="app.js"></script>
 </body>
